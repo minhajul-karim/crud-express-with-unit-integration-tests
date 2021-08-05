@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
   res.sendStatus(200)
 })
 
-// Router for '/users' path
+app.use(express.urlencoded({ extended: true }))
 app.use('/customers', userRouter)
 
 const PORT = process.env.PORT || 5000
