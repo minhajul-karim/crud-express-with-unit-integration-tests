@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 })
 
 // Router for '/users' path
-app.use('/users', userRouter)
+app.use('/customers', userRouter)
 
 const PORT = process.env.PORT || 5000
 
