@@ -15,42 +15,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto@mdo</td>
-                    <td>93293923029309</td>
-                    <td>
-                        <form class="d-flex">
-                            <button
-                                class="btn btn-outline-info me-2"
-                                type="submit"
-                            >Edit</button>
-                            <button
-                                class="btn btn-outline-danger"
-                                type="submit"
-                            >Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton@fat</td>
-                    <td>32323232323</td>
-                    <td>
-                        <form class="d-flex">
-                            <button
-                                class="btn btn-outline-info me-2"
-                                type="submit"
-                            >Edit</button>
-                            <button
-                                class="btn btn-outline-danger"
-                                type="submit"
-                            >Delete</button>
-                        </form>
-                    </td>
-                </tr>
+                {{#each users}}
+                    <tr>
+                        <th scope="row">{{id}}</th>
+                        <td>{{name}}</td>
+                        <td>{{email}}</td>
+                        <td>{{phone}}</td>
+                        <td>
+                            <form class="d-flex">
+                                <button
+                                    class="btn btn-outline-info me-2"
+                                    type="submit"
+                                >Edit</button>
+                                <button
+                                    class="btn btn-outline-danger"
+                                    type="submit"
+                                >Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {{/each}}
             </tbody>
         </table>
     </div>
