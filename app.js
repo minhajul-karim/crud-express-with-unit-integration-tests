@@ -1,23 +1,34 @@
-const express = require('express')
-const exphbs = require('express-handlebars')
-const userRouter = require('./routes/users')
+/*
+ * Title: Project Initial File
+ * Description: Initial file to start the application
+ * Author: Minhajul Karim
+ * Date: 4 Aug 2021
+ */
 
-const app = express()
+// Dependencies
+const express = require("express");
+const exphbs = require("express-handlebars");
+const userRouter = require("./routes/users");
+
+const app = express();
 
 // Handlebars settings
-app.engine('handlebars', exphbs())
-app.set('view engine', 'handlebars')
+app.engine("handlebars", exphbs());
+app.set("view engine", "handlebars");
 
 // Index route
-app.get('/', (req, res) => {
-  res.sendStatus(200)
-})
+app.get("/", (req, res) => {
+  res.sendStatus(200);
+});
 
-app.use(express.urlencoded({ extended: true }))
-app.use('/customers', userRouter)
+// Settings to parse body of a POST request
+app.use(express.urlencoded({ extended: true }));
 
-const PORT = process.env.PORT || 5000
+// Use a separate router for the paths following /customers
+app.use("/customers", userRouter);
+
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`App is running on port ${PORT}`)
-})
+  console.log(`App is running on port ${PORT}`);
+});

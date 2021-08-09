@@ -21,12 +21,22 @@
                         <td>{{name}}</td>
                         <td>{{email}}</td>
                         <td>{{phone}}</td>
-                        <td>
-                            <form class="d-flex">
+                        <td class="d-flex">
+                            <form
+                                class="d-flex"
+                                method="POST"
+                                action="/customers/{{id}}/update"
+                            >
                                 <button
                                     class="btn btn-outline-info me-2"
                                     type="submit"
                                 >Edit</button>
+                            </form>
+                            <form
+                                class="d-flex"
+                                method="POST"
+                                action="/customers/{{id}}/remove"
+                            >
                                 <button
                                     class="btn btn-outline-danger"
                                     type="submit"
