@@ -5,8 +5,10 @@
  * Date: 9 Aug 2021
  */
 
+// Dependencies
 const { getUsersInfo } = require("../utils");
 
+// Test suite for testing utils functions
 describe("Test utils functions", () => {
   test("getUserInfo returns an array of user objects", () => {
     const arrayOfUserObjs = [

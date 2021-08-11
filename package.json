@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node app.js",
         "dev": "npx nodemon app.js",
-        "test": "jest --watch"
+        "test": "jest --watch --verbose"
     },
     "keywords": [],
     "author": "",
@@ -20,6 +20,7 @@
     "devDependencies": {
         "@types/jest": "^26.0.24",
         "jest": "^27.0.6",
-        "sequelize-cli": "^6.2.0"
+        "sequelize-cli": "^6.2.0",
+        "supertest": "^6.1.4"
     }
 }

@@ -17,7 +17,6 @@ const userRouter = express.Router();
 userRouter.get("/", (req, res) => {
   db.User.findAll()
     .then((users) => {
-      console.log(users)
       const allUsers = getUsersInfo(users);
       res.render("home", {
         users: allUsers,
