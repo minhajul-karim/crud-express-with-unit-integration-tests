@@ -6,65 +6,58 @@
  */
 
 // Dependencies
-const express = require("express");
-const db = require("../models");
-const { getUsersInfo } = require('../utils')
+const express = require('express');
+const db = require('../models');
+const { getUsersInfo } = require('../utils');
 
 // Router object
 const userRouter = express.Router();
 
 // Display details of all users
-userRouter.get("/", (req, res) => {
+userRouter.get('/', (req, res) => {
   db.User.findAll()
     .then((users) => {
       const allUsers = getUsersInfo(users);
-      res.render("home", {
-        users: allUsers,
-      });
+      res.render('home', { users: allUsers });
     })
     .catch((err) => {
       console.log(
-        "There was an error to querying users",
-        JSON.stringify(err)
+        'There was an error to querying users',
+        JSON.stringify(err),
       );
     });
 });
 
 // Show add new customer form
-userRouter.get("/add", (req, res) => {
-  res.render("add");
+userRouter.get('/add', (req, res) => {
+  res.render('add');
 });
 
 // Create new user
-userRouter.post("/add", (req, res) => {
+userRouter.post('/add', (req, res) => {
   const { name, email, phone } = req.body;
   const errorMsgs = [];
-  if (!name) errorMsgs.push({ message: "Please provie your name" });
-  if (!email) errorMsgs.push({ message: "Please provie your email" });
-  if (!phone) errorMsgs.push({ message: "Please provie your phone number" });
+  if (!name) errorMsgs.push({ message: 'Please provie your name' });
+  if (!email) errorMsgs.push({ message: 'Please provie your email' });
+  if (!phone) errorMsgs.push({ message: 'Please provie your phone number' });
   if (name && email && phone) {
     // Save user to db
-    db.User.create({
-      name,
+    db.User.create({ name,
       email,
-      phone,
-    })
-      .then(() => res.redirect("/customers"))
+      phone })
+      .then(() => res.redirect('/customers'))
       .catch((err) => console.log(err));
   } else {
     // Show error messages
-    res.render("add", {
-      errorMsgs,
+    res.render('add', { errorMsgs,
       name,
       email,
-      phone,
-    });
+      phone });
   }
 });
 
 // Update existing user
-userRouter.post("/:usreId/update", (req, res) => {
-  const { userId } = req.params;
+userRouter.post('/:usreId/update', (req, res) => {
   res.send(200);
 });
 
