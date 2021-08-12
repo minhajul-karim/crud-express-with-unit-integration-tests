@@ -1,17 +1,20 @@
 {
     "development": {
         "storage": "./db.sqlite3",
-        "dialect": "sqlite"
+        "dialect": "sqlite",
+        "logging": false
     },
     "test": {
-        "storage": "./db.sqlite3",
-        "dialect": "sqlite"
+        "storage": "./test.sqlite3",
+        "dialect": "sqlite",
+        "logging": false
     },
     "production": {
         "username": "root",
         "password": null,
         "database": "database_production",
         "host": "127.0.0.1",
-        "dialect": "mysql"
+        "dialect": "mysql",
+        "logging": false
     }
 }
