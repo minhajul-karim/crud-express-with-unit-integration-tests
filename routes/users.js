@@ -10,6 +10,8 @@ const express = require('express');
 const db = require('../models');
 const { getUsersInfo } = require('../utils');
 
+// TODO: ASYNC ERROR HANDLE
+
 // Router object
 const userRouter = express.Router();
 
@@ -34,25 +36,37 @@ userRouter.get('/add', (req, res) => {
 });
 
 // Create new user
-userRouter.post('/add', (req, res) => {
-  const { name, email, phone } = req.body;
+userRouter.post('/add', async (req, res) => {
+  const { id, name, email, phone } = req.body;
   const errorMsgs = [];
   if (!name) errorMsgs.push({ message: 'Please provie your name' });
   if (!email) errorMsgs.push({ message: 'Please provie your email' });
   if (!phone) errorMsgs.push({ message: 'Please provie your phone number' });
   // TODO: Validate and sanitize inputs
   if (name && email && phone) {
-    // TODO: Update existing users
-    // Save user to db
-    db.User.create({
-      name,
-      email,
-      phone,
-    })
-      .then(() => res.redirect('/customers'))
-      .catch((err) => console.log(err));
+    // Update information if user already exists
+    if (id) {
+      const user = await db.User.findByPk(id);
+      user.name = name;
+      user.email = email;
+      user.phone = phone;
+      await user.save();
+      res.redirect('/customers');
+    } else {
+      // Save new user to db
+      try {
+        await db.User.create({
+          name,
+          email,
+          phone,
+        });
+        res.redirect('/customers');
+      } catch (error) {
+        console.log(error);
+      }
+    }
   } else {
-    // Show error messages
+    // Show error messages above form
     res.render('add', {
       errorMsgs,
       name,
@@ -68,9 +82,10 @@ userRouter.get('/:userId/update', async (req, res) => {
   const { userId } = req.params;
   // Find the user with userId
   const user = await db.User.findByPk(userId);
-  const { name, email, phone } = user;
+  const { id, name, email, phone } = user;
   // Render the add user form and pre-populate it with current name, email, and phone
   res.render('add', {
+    id,
     name,
     email,
     phone,

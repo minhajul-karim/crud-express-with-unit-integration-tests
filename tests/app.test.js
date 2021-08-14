@@ -80,6 +80,13 @@ describe('/customers/add route', () => {
       .send('email=abbas@gmail.com&phone=0190909090909');
     expect(response.text).toMatch(/<p class='text-center text-danger'>Please provie your name<\/p>/);
   });
+
+  test('should update user info if user already exists', async () => {
+    const response = await request
+      .post('/customers/add')
+      .send('id=1&name=Zia Haque&email=abbas@gmail.com&phone=0190909090909');
+    expect(response.status).toBe(302);
+  });
 });
 
 // Test suite for testing /customers/:userId/update route
@@ -101,10 +108,10 @@ describe('/customers/:userId/update', () => {
     );
   });
 
-  test('should populate the name input field with value "Abbas Mustan" for id: 1', async () => {
+  test('should populate the name input field with value "Zia Haque" for id: 1', async () => {
     const response = await request.get('/customers/1/update');
     expect(response.text).toMatch(
-      /name='name'(\r\n|\r|\n)\s*value='Abbas Mustan'/,
+      /name='name'(\r\n|\r|\n)\s*value='Zia Haque'/,
     );
   });
 });
