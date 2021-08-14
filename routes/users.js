@@ -40,6 +40,7 @@ userRouter.post('/add', (req, res) => {
   if (!name) errorMsgs.push({ message: 'Please provie your name' });
   if (!email) errorMsgs.push({ message: 'Please provie your email' });
   if (!phone) errorMsgs.push({ message: 'Please provie your phone number' });
+  // TODO: Validate and sanitize inputs
   if (name && email && phone) {
     // Save user to db
     db.User.create({ name,

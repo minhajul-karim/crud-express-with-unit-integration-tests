@@ -61,10 +61,21 @@ describe('/customers/add route', () => {
     );
   });
 
-  test.only('should redirect to homepage after creating a new user', async () => {
+  test('should redirect to homepage after creating a new user', async () => {
     const response = await request
       .post('/customers/add')
-      .send('name=Jobayer Mojumder&email=job@gmail.com&phone=0190909090909');
+      .send('name=Abbas Mustan&email=abbas@gmail.com&phone=0190909090909');
     expect(response.status).toBe(302);
+  });
+
+  test('should display <p class="text-center text-danger">Please provie your name</p> if name is missing while creating a new user', async () => {
+    const response = await request
+      .post('/customers/add')
+      .send('email=abbas@gmail.com&phone=0190909090909');
+    expect(response.text).toMatch(/<p class="text-center text-danger">Please provie your name<\/p>/);
+  });
+
+  afterAll(async () => {
+    await db.sequelize.close();
   });
 });
