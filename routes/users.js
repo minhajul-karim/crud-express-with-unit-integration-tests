@@ -42,24 +42,39 @@ userRouter.post('/add', (req, res) => {
   if (!phone) errorMsgs.push({ message: 'Please provie your phone number' });
   // TODO: Validate and sanitize inputs
   if (name && email && phone) {
+    // TODO: Update existing users
     // Save user to db
-    db.User.create({ name,
+    db.User.create({
+      name,
       email,
-      phone })
+      phone,
+    })
       .then(() => res.redirect('/customers'))
       .catch((err) => console.log(err));
   } else {
     // Show error messages
-    res.render('add', { errorMsgs,
+    res.render('add', {
+      errorMsgs,
       name,
       email,
-      phone });
+      phone,
+    });
   }
 });
 
 // Update existing user
-userRouter.post('/:usreId/update', (req, res) => {
-  res.send(200);
+userRouter.get('/:userId/update', async (req, res) => {
+  // Retrieve userId from URL
+  const { userId } = req.params;
+  // Find the user with userId
+  const user = await db.User.findByPk(userId);
+  const { name, email, phone } = user;
+  // Render the add user form and pre-populate it with current name, email, and phone
+  res.render('add', {
+    name,
+    email,
+    phone,
+  });
 });
 
 module.exports = userRouter;

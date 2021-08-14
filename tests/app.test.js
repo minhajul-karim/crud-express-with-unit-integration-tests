@@ -12,6 +12,11 @@ const app = require('../app');
 const request = supertest(app);
 const db = require('../models');
 
+// Clear db and run migrations
+beforeAll(async () => {
+  await db.sequelize.sync({ force: true });
+});
+
 // Test suite for testing the index route
 describe('index route', () => {
   test('should respond with 200 for GET request', async () => {
@@ -39,25 +44,26 @@ describe('/customers route', () => {
 
   test('should contain <p class="lead">Customers</p> inside body', async () => {
     const response = await request.get('/customers');
-    expect(response.text).toMatch(/<p class="lead">Customers<\/p>/);
+    expect(response.text).toMatch(/<p class='lead'>Customers<\/p>/);
   });
 });
 
 // Test suite for testing the /customers/add route
 describe('/customers/add route', () => {
-  beforeAll(async () => {
-    await db.sequelize.sync({ force: true });
-  });
-
-  test('should return status code 200 visiting /customers/add route', async () => {
+  test('should return status code 200', async () => {
     const response = await request.get('/customers/add');
     expect(response.status).toBe(200);
   });
 
-  test('should display the form when users visit customers/add route', async () => {
+  test('should contain content-type=text/html', async () => {
+    const response = await request.get('/customers/add');
+    expect(response.headers['content-type']).toMatch(/html/);
+  });
+
+  test('should display the form', async () => {
     const response = await request.get('/customers/add');
     expect(response.text).toMatch(
-      /<form action="\/customers\/add" method="POST">/,
+      /<form action='\/customers\/add' method='POST'>/,
     );
   });
 
@@ -72,10 +78,38 @@ describe('/customers/add route', () => {
     const response = await request
       .post('/customers/add')
       .send('email=abbas@gmail.com&phone=0190909090909');
-    expect(response.text).toMatch(/<p class="text-center text-danger">Please provie your name<\/p>/);
+    expect(response.text).toMatch(/<p class='text-center text-danger'>Please provie your name<\/p>/);
+  });
+});
+
+// Test suite for testing /customers/:userId/update route
+describe('/customers/:userId/update', () => {
+  test('should return status code 200', async () => {
+    const response = await request.get('/customers/1/update');
+    expect(response.status).toBe(200);
   });
 
-  afterAll(async () => {
-    await db.sequelize.close();
+  test('should contain content-type=text/html', async () => {
+    const response = await request.get('/customers/1/update');
+    expect(response.headers['content-type']).toMatch(/html/);
   });
+
+  test('should display the update form', async () => {
+    const response = await request.get('/customers/1/update');
+    expect(response.text).toMatch(
+      /<form action='\/customers\/add' method='POST'>/,
+    );
+  });
+
+  test('should populate the name input field with value "Abbas Mustan" for id: 1', async () => {
+    const response = await request.get('/customers/1/update');
+    expect(response.text).toMatch(
+      /name='name'(\r\n|\r|\n)\s*value='Abbas Mustan'/,
+    );
+  });
+});
+
+// Close db connection
+afterAll(async () => {
+  await db.sequelize.close();
 });
