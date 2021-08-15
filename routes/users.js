@@ -92,4 +92,13 @@ userRouter.get('/:userId/update', async (req, res) => {
   });
 });
 
+// Remvoe users
+userRouter.get('/:userId/remove', async (req, res) => {
+  // Retrieve userId from URL
+  const { userId } = req.params;
+  // Delete user
+  await db.User.destroy({ where: { id: userId } });
+  res.render('deleted');
+});
+
 module.exports = userRouter;
