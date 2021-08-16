@@ -7,6 +7,7 @@
 
 // Dependencies
 const express = require('express');
+const { Op } = require('sequelize');
 const db = require('../models');
 const { getUsersInfo } = require('../utils');
 
@@ -16,18 +17,18 @@ const { getUsersInfo } = require('../utils');
 const userRouter = express.Router();
 
 // Display details of all users
-userRouter.get('/', (req, res) => {
-  db.User.findAll()
-    .then((users) => {
-      const allUsers = getUsersInfo(users);
-      res.render('home', { users: allUsers });
-    })
-    .catch((err) => {
-      console.log(
-        'There was an error to querying users',
-        JSON.stringify(err),
-      );
-    });
+userRouter.get('/', async (req, res) => {
+  let users;
+  try {
+    users = await db.User.findAll();
+  } catch (error) {
+    console.log(
+      'There was an error to querying users',
+      JSON.stringify(err),
+    );
+  }
+  const allUsers = getUsersInfo(users);
+  res.render('home', { users: allUsers });
 });
 
 // Show add new customer form
@@ -99,6 +100,27 @@ userRouter.get('/:userId/remove', async (req, res) => {
   // Delete user
   await db.User.destroy({ where: { id: userId } });
   res.render('deleted');
+});
+
+// Search information
+userRouter.get('/search/', async (req, res) => {
+  const { q } = req.query;
+  let users;
+  try {
+    users = await db.User.findAll({
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: `%${q}%` } },
+          { email: { [Op.like]: `%${q}%` } },
+          { phone: { [Op.like]: `%${q}%` } },
+        ],
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+  const allUsers = getUsersInfo(users);
+  res.render('home', { users: allUsers });
 });
 
 module.exports = userRouter;

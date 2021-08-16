@@ -8,9 +8,9 @@
 // Dependencies
 const supertest = require('supertest');
 const app = require('../app');
+const db = require('../models');
 
 const request = supertest(app);
-const db = require('../models');
 
 describe('Test /customers routes', () => {
   // Clear db and run migrations
@@ -38,7 +38,7 @@ describe('Test /customers routes', () => {
       expect(response.status).toBe(200);
     });
 
-    test('should contain content-type=text/html', async () => {
+    test('should return response that contains content-type=text/html', async () => {
       const response = await request.get('/customers');
       expect(response.headers['content-type']).toMatch(/html/);
     });
@@ -125,8 +125,9 @@ describe('Test /customers routes', () => {
     });
   });
 
-  // Close db connection
+  // Clear users table and close db connection
   afterAll(async () => {
+    await db.User.truncate();
     await db.sequelize.close();
   });
 });
