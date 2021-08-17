@@ -8,7 +8,7 @@
 // Dependencies
 const express = require('express');
 const exphbs = require('express-handlebars');
-const userRouter = require('./routes/users');
+const customerRouter = require('./routes/customers');
 
 const app = express();
 
@@ -25,6 +25,6 @@ app.get('/', (req, res) => {
 app.use(express.urlencoded({ extended: true }));
 
 // Use a separate router for the paths following /customers
-app.use('/customers', userRouter);
+app.use('/customers', customerRouter);
 
 module.exports = app;

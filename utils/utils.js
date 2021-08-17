@@ -15,10 +15,12 @@
 function getUsersInfo(users) {
   return users.map((userObj) => {
     const { id, name, phone, email } = userObj;
-    return { id,
+    return {
+      id,
       name,
       phone,
-      email };
+      email,
+    };
   });
 }
 

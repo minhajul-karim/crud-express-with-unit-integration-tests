@@ -1,7 +1,6 @@
-/* eslint-disable */
-
 {
   "typeAcquisition": {
     "include": ["jest"]
-  }
+  },
+  "exclude": ["node_modules"]
 }

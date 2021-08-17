@@ -9,15 +9,15 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const db = require('../models');
-const { getUsersInfo } = require('../utils');
+const { getUsersInfo } = require('../utils/utils');
 
 // TODO: ASYNC ERROR HANDLE
 
 // Router object
-const userRouter = express.Router();
+const router = express.Router();
 
 // Display details of all users
-userRouter.get('/', async (req, res) => {
+router.get('/', async (req, res) => {
   let users;
   try {
     users = await db.User.findAll();
@@ -32,12 +32,12 @@ userRouter.get('/', async (req, res) => {
 });
 
 // Show add new customer form
-userRouter.get('/add', (req, res) => {
+router.get('/add', (req, res) => {
   res.render('add');
 });
 
 // Create new user
-userRouter.post('/add', async (req, res) => {
+router.post('/add', async (req, res) => {
   const { id, name, email, phone } = req.body;
   const errorMsgs = [];
   if (!name) errorMsgs.push({ message: 'Please provie your name' });
@@ -78,7 +78,7 @@ userRouter.post('/add', async (req, res) => {
 });
 
 // Update existing user
-userRouter.get('/:userId/update', async (req, res) => {
+router.get('/:userId/update', async (req, res) => {
   // Retrieve userId from URL
   const { userId } = req.params;
   // Find the user with userId
@@ -94,7 +94,7 @@ userRouter.get('/:userId/update', async (req, res) => {
 });
 
 // Remvoe users
-userRouter.get('/:userId/remove', async (req, res) => {
+router.get('/:userId/remove', async (req, res) => {
   // Retrieve userId from URL
   const { userId } = req.params;
   // Delete user
@@ -103,7 +103,7 @@ userRouter.get('/:userId/remove', async (req, res) => {
 });
 
 // Search information
-userRouter.get('/search/', async (req, res) => {
+router.get('/search/', async (req, res) => {
   const { q } = req.query;
   let users;
   try {
@@ -123,4 +123,4 @@ userRouter.get('/search/', async (req, res) => {
   res.render('home', { users: allUsers });
 });
 
-module.exports = userRouter;
+module.exports = router;
