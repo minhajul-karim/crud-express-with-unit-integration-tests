@@ -1,3 +1,5 @@
+[![Node.js CI](https://github.com/minhajul-karim/crud-sequelize/actions/workflows/node.js.yml/badge.svg)](https://github.com/minhajul-karim/crud-sequelize/actions/workflows/node.js.yml)
+
 # Introduction
 
 A CRUD implementation using Sequelize in Express. Unit tests and integration tests are written using Jest.
